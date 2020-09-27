@@ -1,6 +1,8 @@
 ### Specific files ###
 ######################
 *.jpg
+azure-config.ini
+write-azure-config.py
 
 ### Folders ###
 ###############
