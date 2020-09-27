@@ -1,6 +1,8 @@
 ### Specific files ###
 ######################
 *.jpg
+write-azure-config
+azure-config.ini
 
 ### Folders ###
 ###############
