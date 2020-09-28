@@ -1,6 +1,7 @@
 ### Specific files ###
 ######################
 *.jpg
+test.py
 
 ### Folders ###
 ###############
@@ -8,3 +9,4 @@ venv
 __pycache__
 .ipynb_checkpoints
 .vscode
+data
