@@ -3,7 +3,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 from flask import Flask, Response
-import cv2
+import numpy
+from cv2 import cv2
 
 class VideoCamera(object):
     def __init__(self):

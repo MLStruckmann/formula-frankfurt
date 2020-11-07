@@ -1,6 +1,5 @@
 class Detector(object):
     def __init__(self):
-        # all the shit you run once
 
     # def __del__(self):
     #     self.video.release()

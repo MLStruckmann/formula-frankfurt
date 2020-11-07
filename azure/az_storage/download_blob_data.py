@@ -10,10 +10,7 @@ download_folder = "/home/magnus/Downloads"
 
 # Read config
 config = configparser.ConfigParser()
-current_file_path = Path(os.path.abspath(__file__))
-folder_directory = current_file_path.parent.parent
-config_path = os.path.join(folder_directory,"azure-config.ini")
-config.read(config_path)
+config.read("config.ini")
 
 # Assign variables from config
 blob_account_url = config["azure_blob_storage"]["connection_string"]
