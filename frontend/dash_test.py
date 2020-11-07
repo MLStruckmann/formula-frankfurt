@@ -7,6 +7,7 @@ import cv2
 
 class VideoCamera(object):
     def __init__(self):
+        print('in')
         self.video = cv2.VideoCapture(0)
 
     def __del__(self):
@@ -14,6 +15,7 @@ class VideoCamera(object):
 
     def get_frame(self):
         success, image = self.video.read()
+        print(type(image))
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
 
