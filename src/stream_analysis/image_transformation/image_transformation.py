@@ -31,6 +31,7 @@ def calc_matrix():
     #TODO replace with reading image from camera
     filepath = os.path.join(os.getcwd(),"src","stream_analysis","image_transformation","sample_pictures","2-high.jpg")
     print(filepath)
+    global img 
     img = cv2.imread(filepath)
     cv2.namedWindow("image",cv2.WINDOW_NORMAL)
     cv2.resizeWindow("image", 600,600)
@@ -75,9 +76,7 @@ def calc_matrix():
 
     return M
 
-calc_matrix()
-
-def apply_matrix_to_pt(pos, M,):
+def apply_matrix_to_pt(pos, M):
 
     #TODO Magnus Morales Magic
     # np.matmul(M, pos) ?
