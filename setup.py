@@ -28,5 +28,5 @@ config["transformation_matrix"] = str(M)
 # config["transformation_points"]["red"] = "[1750, 1616]"
 # config["transformation_points"]["yellow"] = "[3031, 1236]"
 
-with open('config.json', 'w') as fp:
+with open('src/config.json', 'w') as fp:
     json.dump(config, fp)

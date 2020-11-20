@@ -7,9 +7,9 @@ import cv2
 
 import argparse
 
-from models import *  # set ONNX_EXPORT in models.py
-from utils.datasets import *
-from utils.utils import *
+from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in models.py
+from stream_analysis.motion_detection.utils.datasets import *
+from stream_analysis.motion_detection.utils.utils import *
 
 class Detector(object):
 
@@ -165,8 +165,10 @@ app = dash.Dash(__name__, server=server)
 
 @server.route('/video_feed')
 def video_feed():
-    return Response(gen(Detector('C:/Users/sdicarrera/Documents/yolov3-master/weights/last.pt', 'C:/Users/sdicarrera/Documents/yolov3-master/cfg/yolov3-tiny.cfg', 'C:/Users/sdicarrera/Documents/yolov3-master/data_new/names.name', 'cpu', '0')),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(Detector('C:/Users/sdicarrera/Documents/yolov3-master/weights/last.pt', 
+                                 'C:/Users/sdicarrera/Documents/yolov3-master/cfg/yolov3-tiny.cfg', 
+                                 'C:/Users/sdicarrera/Documents/yolov3-master/data_new/names.name', 'cpu', '0')),
+                    mimetype='multipart/x-mixed-replace; boundary=frame') #TODO Change paths to project directory
 
 app.layout = html.Div([
     html.H1("Webcam Test"),

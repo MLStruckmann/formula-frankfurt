@@ -76,13 +76,13 @@ def calc_matrix():
 
     return M
 
-def apply_matrix_to_pt(pos, M):
+def transform_point(M, pos):
 
     #TODO Magnus Morales Magic
     # np.matmul(M, pos) ?
+    pos.append(1)
+    return np.matmul(M,pos)
 
-    return pos_transformed
-
-def apply_matrix_to_img(img, M, img_size):
+def transform_image(M, img, img_size):
 
     return cv2.warpAffine(img,M,(cols,rows))
