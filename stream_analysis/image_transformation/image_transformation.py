@@ -13,6 +13,9 @@ def draw_circle(event,x,y,flags,param):
 
 # print(M)
 
+# Print example transformation from picture #
+#############################################
+
 # plt.rcParams["figure.figsize"]= 10,10
 
 # plt.imshow(img)
@@ -27,9 +30,6 @@ def calc_matrix():
 
     #TODO replace with reading image from camera
     filepath = os.path.join(os.getcwd(), "stream_analysis","image_transformation","sample_pictures","2-high.jpg")
-    image = PIL.Image.open(filepath)
-    width, height = image.size
-    print(width, height)
 
     img = cv2.imread(filepath)
     cv2.namedWindow("image",cv2.WINDOW_NORMAL)
@@ -64,8 +64,7 @@ def calc_matrix():
     #     print(pos_blue)
     #     print(pos_red)
     #     print(pos_yellow)
-    
-    #img = cv2.imread(filepath)
+
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # set CV2 color scale to RGB
     rows,cols,ch = img.shape
 
@@ -76,13 +75,15 @@ def calc_matrix():
 
     return M
 
-def apply_matrix_to_pt(pos, M, (rows, columns)):
+calc_matrix()
+
+def apply_matrix_to_pt(pos, M,):
 
     #TODO Magnus Morales Magic
     # np.matmul(M, pos) ?
 
     return pos_transformed
 
-def apply_matrix_to_img(img, M, (rows, columns)):
+def apply_matrix_to_img(img, M, img_size):
 
     return cv2.warpAffine(img,M,(cols,rows))
