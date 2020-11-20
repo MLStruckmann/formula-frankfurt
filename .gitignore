@@ -3,6 +3,7 @@
 *.jpg
 test.py
 config.ini
+config.json
 
 ### Folders ###
 ###############
