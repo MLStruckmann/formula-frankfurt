@@ -4,14 +4,16 @@ import json
 from flask import Flask, Response, render_template
 import dash
 import dash_html_components as html
+import dash_bootstrap_components as dbc
+import dash_core_components as dcc
 
 from stream_analysis.motion_detection.model_dash_integration import Detector, gen
+from azure_dummy.az_storage.download_cosmos_data import download_cosmos
+from frontend.apps import high_score_table
 
 # Read config
-with open('config.json', 'r') as fp:
-    data = json.load(fp)
-
-# Start Detector
+# with open('config.json', 'r') as fp:
+#     data = json.load(fp)
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server)
@@ -23,14 +25,24 @@ def video_feed():
                                  r'C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\data_new\names.name', 'cpu', '0')), 
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-# @server.route('/dashboard')
-# def dashboard():
-# 	return dashboard.layout
+# @server.route('/high_score_table')
+# def high_score_table():
+#     return high_score_table(download_cosmos())
 
 app.layout = html.Div([
-    html.H1("Wenn das läuft lutsch ich mir selber einen ab"),
-    html.Img(src="/video_feed")
+    html.H1("Hallo meine lieben Leute"),
+    html.Img(src="/video_feed"),
+    html.Div(high_score_table.layout(download_cosmos())),
+    # dcc.Interval(
+    #         id='interval-component',
+    #         interval=5*1000, # in milliseconds
+    #         n_intervals=0
+    # )
 ])
+
+# @app.callback(Output('high-score-table', 'children'),
+#               Input('interval-component', 'n_intervals'))
+# def update_ticker
 
 if __name__ == '__main__':
 

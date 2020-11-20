@@ -143,7 +143,7 @@ class Detector(object):
                         plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)])
 
             # Print time (inference + NMS)
-            print('%sDone. (%.3fs)' % (s, t2 - t1))
+            #print('%sDone. (%.3fs)' % (s, t2 - t1))
 
             # Stream results
             if self.view_img:

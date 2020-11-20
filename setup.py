@@ -14,6 +14,8 @@ config = {}
 
 config["DEFAULT"] = {"TimeZone": "UTC+01:00"}
 
+config["session_name"] = input('Enter Session Name (Conference Etc.):')
+
 # Azure Blob Storage Config
 config["azure_blob_storage"] = {}
 config["azure_blob_storage"]["key"] = input('Enter Azure Blob Storage Key:')
