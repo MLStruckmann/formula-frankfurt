@@ -1,6 +1,6 @@
 from IPython.display import Image
 import numpy as np
-from cv2 import cv2
+from cv2 import cv2, VideoCapture
 import os
 import PIL
 import matplotlib.pyplot as plt
@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def draw_circle(event,x,y,flags,param):
     global mouseX,mouseY
     if event == cv2.EVENT_LBUTTONDBLCLK:
-        cv2.circle(img,(x,y),20,(255,0,0),-1)
+        cv2.circle(img,(x,y),5,(255,0,0),-1)
         mouseX,mouseY = x,y
 
 # print(M)
@@ -28,13 +28,17 @@ def draw_circle(event,x,y,flags,param):
 
 def calc_matrix():
 
+    global img
+    cam = VideoCapture(0)   # 0 -> index of camera
+    s, img = cam.read()
+    print(img.shape)
     #TODO replace with reading image from camera
-    filepath = os.path.join(os.getcwd(),"src","stream_analysis","image_transformation","sample_pictures","2-high.jpg")
-    print(filepath)
-    global img 
-    img = cv2.imread(filepath)
+    #filepath = os.path.join(os.getcwd(),"src","stream_analysis","image_transformation","sample_pictures","2-high.jpg")
+    #print(filepath)
+     
+    #img = cv2.imread(filepath)
     cv2.namedWindow("image",cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("image", 600,600)
+    cv2.resizeWindow("image", 1280,720)
     cv2.setMouseCallback("image",draw_circle)
 
     while(1):
@@ -78,11 +82,10 @@ def calc_matrix():
 
 def transform_point(M, pos):
 
-    #TODO Magnus Morales Magic
-    # np.matmul(M, pos) ?
     pos.append(1)
     return np.matmul(M,pos)
 
 def transform_image(M, img, img_size):
-
-    return cv2.warpAffine(img,M,(cols,rows))
+    
+    pass
+    #return cv2.warpAffine(img,M,(cols,rows))

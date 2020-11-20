@@ -3,7 +3,6 @@ import json
 import os
 from src.stream_analysis.image_transformation.image_transformation import calc_matrix
 
-
 M = calc_matrix()
 
 # test_M = [[ 4.37936347e-01,  1.14884857, -3.09735413e+02]
@@ -30,3 +29,5 @@ config["transformation_matrix"] = str(M)
 
 with open('src/config.json', 'w') as fp:
     json.dump(config, fp)
+
+print('Setup Completed Successfully!')
