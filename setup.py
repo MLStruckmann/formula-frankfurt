@@ -1,12 +1,13 @@
 import configparser
 import json
 import os
-from formula-frankfurt.image_transformation.image_transformation import calc_matrix
+from src.stream_analysis.image_transformation.image_transformation import calc_matrix
 
-M = calc_matrix()
-
-# test_M = str([[ 4.37936347e-01  1.14884857e+00 -3.09735413e+02]
-#               [-3.98250557e-01  9.27410298e-01  7.26099746e+02]])
+try:
+    M = calc_matrix()
+except:
+    test_M = [[ 4.37936347e-01,  1.14884857, -3.09735413e+02]
+              [-3.98250557e-01,  9.27410298e-01,  7.26099746e+02]]
 
 # Write Config File
 

@@ -1,6 +1,5 @@
 ### Specific files ###
 ######################
-*.jpg
 test.py
 config.ini
 config.json
