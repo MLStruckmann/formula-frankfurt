@@ -31,12 +31,8 @@ def calc_matrix():
     global img
     cam = VideoCapture(0)   # 0 -> index of camera
     s, img = cam.read()
-    print(img.shape)
-    #TODO replace with reading image from camera
-    #filepath = os.path.join(os.getcwd(),"src","stream_analysis","image_transformation","sample_pictures","2-high.jpg")
-    #print(filepath)
-     
-    #img = cv2.imread(filepath)
+    #TODO suppress warnings
+
     cv2.namedWindow("image",cv2.WINDOW_NORMAL)
     cv2.resizeWindow("image", 1280,720)
     cv2.setMouseCallback("image",draw_circle)
@@ -50,10 +46,13 @@ def calc_matrix():
             print(mouseX,mouseY)
         elif k == ord("b"):
             pos_blue = [mouseX,mouseY]
+            print('Blue Marked at ' + str(pos_blue))
         elif k == ord("r"):
             pos_red = [mouseX,mouseY]
+            print('Red Marked at ' + str(pos_red))
         elif k == ord("y"):
             pos_yellow = [mouseX,mouseY]
+            print('Yellow Marked at ' + str(pos_yellow))
         elif k == ord("q"):
             cv2.destroyAllWindows()
             break
