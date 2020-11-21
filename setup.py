@@ -17,9 +17,9 @@ config["DEFAULT"] = {"TimeZone": "UTC+01:00"}
 config["session_name"] = input('Enter Session Name (Conference Etc.):')
 
 # Azure Blob Storage Config
-config["azure_blob_storage"] = {}
-config["azure_blob_storage"]["key"] = input('Enter Azure Blob Storage Key:')
-config["azure_blob_storage"]["connection_string"] = input('Enter Azure Blob Storage Connection String:')
+# config["azure_cosmos"] = {}
+# config["azure_cosmos"]["url"] = input('Enter Azure Cosmos URL:')
+config["azure_cosmos_key"] = input('Enter Azure Cosmos Key:')
 
 # Transformation Matrix
 config["transformation_matrix"] = str(M)

@@ -14,7 +14,7 @@ def collect_race_data():
 def average(lst): 
     return reduce(lambda a, b: a + b, lst) / len(lst)
 
-def calculate_metrics(race_data):
+def calculate_metrics(race_data, conference):
 
     time_stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     for driver_data in race_data:
@@ -24,5 +24,5 @@ def calculate_metrics(race_data):
         driver_data["average_lap"] = round(average(driver_data["lap_times"]),2)
         driver_data["fastest_lap"] = min(driver_data["lap_times"])
         driver_data["number_of_laps"] = len(driver_data["lap_times"])
-
+        driver_data["conference_name"] = conference
     return race_data

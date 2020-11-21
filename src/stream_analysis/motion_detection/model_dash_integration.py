@@ -11,8 +11,7 @@ from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in mode
 from stream_analysis.motion_detection.utils.datasets import *
 from stream_analysis.motion_detection.utils.utils import *
 
-global car_positions 
-car_positions = None
+
 
 class Detector(object):
 
@@ -159,8 +158,9 @@ def gen(camera):
     for path, img, im0s, vid_cap in camera.dataset:
 
         (p, im0, det) = camera.get_frame(path, img, im0s, vid_cap)
-        det = det.detach().numpy()
-        car_positions.append(det)
+
+        #car_positions = car_positions.append(det)[:-1]
+
         # print(type(det))
         ret, jpeg = cv2.imencode('.jpg', im0)
         frame = jpeg.tobytes()
@@ -169,7 +169,7 @@ def gen(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 def return_det():
-    return (car_positions)
+    yield (car_positions)
 
 # server = Flask(__name__)
 # app = dash.Dash(__name__, server=server)

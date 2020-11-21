@@ -3,19 +3,28 @@ import json
 import pandas as pd
 
 url = "https://mls-dashboard-data.documents.azure.com:443/"
-key = "zRWAZ9FiwVtcZIqMhatuTf1knBYwQFYoYhXqJpfXQD9laT3mbVkJmeQsysAHUVq0QhMlMJZu40M8WDfOfgctVw==s"
-client = CosmosClient(url, credential=key)
-database_name = 'conference-data'
-database = client.get_database_client(database_name)
-container_name = 'driver-data'
-container = database.get_container_client(container_name)
+#key = "zRWAZ9FiwVtcZIqMhatuTf1knBYwQFYoYhXqJpfXQD9laT3mbVkJmeQsysAHUVq0QhMlMJZu40M8WDfOfgctVw==s"
 
-def upload_race(race_data):
+
+def upload_cosmos(race_data, key):
+
+    client = CosmosClient(url, credential=key)
+    database_name = 'conference-data'
+    database = client.get_database_client(database_name)
+    container_name = 'driver-data'
+    container = database.get_container_client(container_name)
+
     # upload race data
     for driver_data in race_data:
         container.upsert_item(driver_data)
 
-def download_cosmos():
+def download_cosmos(key):
+
+    client = CosmosClient(url, credential=key)
+    database_name = 'conference-data'
+    database = client.get_database_client(database_name)
+    container_name = 'driver-data'
+    container = database.get_container_client(container_name)
 
     fastest_drivers = pd.DataFrame(columns=["driver_name","average_lap","fastest_lap"])
 
