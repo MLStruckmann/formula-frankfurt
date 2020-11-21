@@ -11,6 +11,9 @@ from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in mode
 from stream_analysis.motion_detection.utils.datasets import *
 from stream_analysis.motion_detection.utils.utils import *
 
+global car_positions 
+car_positions = None
+
 class Detector(object):
 
     def __init__(self,weights_arg,cfg_arg,names_arg,device_arg,source_arg,save_img=False):
@@ -141,39 +144,47 @@ class Detector(object):
                     if self.view_img:  # Add bbox to image
                         label = '%s %.2f' % (self.names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)])
+                car_positions = det
 
             # Print time (inference + NMS)
             #print('%sDone. (%.3fs)' % (s, t2 - t1))
 
             # Stream results
             if self.view_img:
-                return (p, im0)
+                return (p, im0, det)
+
 
 
 def gen(camera):
     for path, img, im0s, vid_cap in camera.dataset:
 
-        (p, im0) = camera.get_frame(path, img, im0s, vid_cap)
+        (p, im0, det) = camera.get_frame(path, img, im0s, vid_cap)
+        det = det.detach().numpy()
+        car_positions.append(det)
+        # print(type(det))
         ret, jpeg = cv2.imencode('.jpg', im0)
         frame = jpeg.tobytes()
-        # cv2.imshow(p, im0)        
+        # cv2.imshow(p, im0)       
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-server = Flask(__name__)
-app = dash.Dash(__name__, server=server)
+def return_det():
+    return (car_positions)
 
-@server.route('/video_feed')
-def video_feed():
-    return Response(gen(Detector('C:/Users/sdicarrera/Documents/yolov3-master/weights/last.pt', 
-                                 'C:/Users/sdicarrera/Documents/yolov3-master/cfg/yolov3-tiny.cfg', 
-                                 'C:/Users/sdicarrera/Documents/yolov3-master/data_new/names.name', 'cpu', '0')),
-                    mimetype='multipart/x-mixed-replace; boundary=frame') #TODO Change paths to project directory
+# server = Flask(__name__)
+# app = dash.Dash(__name__, server=server)
 
-app.layout = html.Div([
-    html.H1("Webcam Test"),
-    html.Img(src="/video_feed")
-])
+# @server.route('/video_feed')
+# def video_feed():
+#     return Response(gen(Detector('C:/Users/sdicarrera/Documents/yolov3-master/weights/last.pt', 
+#                                  'C:/Users/sdicarrera/Documents/yolov3-master/cfg/yolov3-tiny.cfg', 
+#                                  'C:/Users/sdicarrera/Documents/yolov3-master/data_new/names.name', 'cpu', '0')),
+#                     mimetype='multipart/x-mixed-replace; boundary=frame') #TODO Change paths to project directory
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+# app.layout = html.Div([
+#     html.H1("Webcam Test"),
+#     html.Img(src="/video_feed")
+# ])
+
+# if __name__ == '__main__':
+#     app.run_server(debug=True)

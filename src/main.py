@@ -20,10 +20,19 @@ app = dash.Dash(__name__, server=server)
 
 @server.route('/video_feed')
 def video_feed():
-    return Response(gen(Detector(r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\weights\last.pt", 
-                                 r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\cfg\yolov3-tiny.cfg", 
-                                 r'C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\data_new\names.name', 'cpu', '0')), 
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    a = gen(Detector(r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\weights\last.pt", 
+    r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\cfg\yolov3-tiny.cfg", 
+    r'C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\data_new\names.name', 'cpu', '0'))
+    print(type(a))
+    return Response(a, mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# def video_feed():
+#     frame, det = gen(Detector(r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\weights\last.pt", 
+#     r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\cfg\yolov3-tiny.cfg", 
+#     r'C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\data_new\names.name', 'cpu', '0'))
+#     print(det)
+#     return Response(frame, mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # @server.route('/high_score_table')
 # def high_score_table():
@@ -58,3 +67,5 @@ if __name__ == '__main__':
 
     # Run Dashboard
     app.run_server(debug=True)
+
+    print('this runs')
