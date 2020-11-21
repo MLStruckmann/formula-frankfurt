@@ -7,6 +7,7 @@ config.json
 ### Folders ###
 ###############
 venv
+ff-overall-venv
 __pycache__
 .ipynb_checkpoints
 .vscode
