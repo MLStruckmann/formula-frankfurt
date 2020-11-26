@@ -34,15 +34,15 @@ def video_feed():
     return Response(a, mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-def all_even():
-    n = 0
-    while True:
-        yield n
-        n += 2
+# def all_even():
+#     n = 0
+#     while True:
+#         yield n
+#         n += 2
 
-@server.route('/positions')
-def position_feed():
-    return Response(all_even)
+# @server.route('/positions')
+# def position_feed():
+#     return Response(all_even)
 
 
 # def video_feed():
