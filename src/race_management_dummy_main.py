@@ -27,7 +27,7 @@ while race_ongoing:
                                                         lap_time_driver1=5, # lap time in seconds
                                                         lap_time_driver2=7) # race data print out true or false
 
-    # print("Driver 1:",signal_driver1,"\nDriver 2:",signal_driver2)
+    print("Driver 1:",signal_driver1,"\nDriver 2:",signal_driver2)
 
     # Transform sensor data to relevant race data for both drivers (only ne input stream for both lap sensors)
     driver1, driver2, race_ongoing = collect_race_data_real(driver1, 
