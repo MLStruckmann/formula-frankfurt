@@ -18,15 +18,16 @@ class Driver:
 
     # Calculate race metrics from driver data
     def calculate_metrics(self):
-        self.fastest_lap = min(self.lap_times)
+        self.fastest_lap = round(min(self.lap_times),2)
         average_lap = reduce(lambda a, b: a + b, self.lap_times) / len(self.lap_times)
         self.average_lap = round(average_lap,2)
         
-    # Generate dictionary from driver data for upload to Azure cosmos
+    # Generate dictionary from driver data for upload to Azure Cosmos DB
     def return_dict(self):
         driver_data = {}
         driver_data["raceid"] = self.raceid
         driver_data["driver_name"] = self.driver_name
+        driver_data["lap_times"] = self.lap_times
         driver_data["average_lap"] = self.average_lap
         driver_data["fastest_lap"] = self.fastest_lap
         driver_data["number_of_laps"] = self.lap_count
