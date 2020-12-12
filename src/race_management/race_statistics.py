@@ -2,19 +2,22 @@ from functools import reduce
 import random # for random driver name and random lap time
 import string # only for random driver name
 from datetime import datetime
+import json
 
 class Driver:
     "Class for collecting driver lap data"
 
     # Initialize driver object
-    def __init__(self, driver_name, raceid, conference_name, start_time):
-        self.lap_count = 0
-        self.lap_times = []
+    def __init__(self, driver_name, raceid, conference_name, start_time, lap_count = 0, lap_times = [], fastest_lap = None, average_lap = None):
+        self.lap_count = lap_count
+        self.lap_times = lap_times
         self.driver_name = driver_name
         self.raceid = raceid
         self.conference_name = conference_name
         self.start_time = start_time
         self.time_stamp_last_lap = start_time
+        self.fastest_lap = fastest_lap
+        self.average_lap = average_lap
 
     # Calculate race metrics from driver data
     def calculate_metrics(self):
@@ -23,7 +26,8 @@ class Driver:
         self.average_lap = round(average_lap,2)
         
     # Generate dictionary from driver data for upload to Azure Cosmos DB
-    def return_dict(self):
+    def to_dict(self, for_azure = False, as_json = False):
+
         driver_data = {}
         driver_data["raceid"] = self.raceid
         driver_data["driver_name"] = self.driver_name
@@ -32,7 +36,22 @@ class Driver:
         driver_data["fastest_lap"] = self.fastest_lap
         driver_data["number_of_laps"] = self.lap_count
         driver_data["conference_name"] = self.conference_name
+
+        if not for_azure:
+
+            del driver_data['number_of_laps']
+            driver_data["lap_count"] = self.lap_count
+            driver_data["start_time"] = self.start_time
+            driver_data["time_stamp_last_lap"] = self.time_stamp_last_lap
+
+        if as_json: return json.dumps(driver_data)
+
         return driver_data
+
+def create_driver_from_dict(dict):
+
+    d = Driver(driver_name=)
+    return 
 
 # Transform sensor data to relevant race data for both drivers (only ne input stream for both lap sensors) 
 def collect_race_data_real(driver1, 

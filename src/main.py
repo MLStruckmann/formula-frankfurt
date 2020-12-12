@@ -6,7 +6,7 @@ import dash
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
-from dash.dependencies import State
+from dash.dependencies import Input, Output, State
 
 from stream_analysis.motion_detection.model_dash_integration import Detector, gen, return_det
 from azure_.az_storage.cosmos_data import upload_cosmos, download_cosmos
@@ -51,6 +51,8 @@ def video_feed():
 #     return high_score_table(download_cosmos())
 
 app.layout = html.Div([
+    html.Div(id = 'driver-1-frontend-storage', style = {'display':'none'}),
+    html.Div(id = 'driver-2-frontend-storage', style = {'display':'none'}),
     html.H1("Hallo meine lieben Leute"),
     html.Img(src="/video_feed"),
     html.Div(default_layout(), id = 'race-mgmt'),
@@ -62,33 +64,36 @@ app.layout = html.Div([
     )
 ])
 
-@app.callback(Output('race-mgmt', 'children'), #driver-frontend, children?
-              Input('submit-drivers-button', 'n_clicks'),
-              State('driver-1-name-input', 'driver-2-name-input')) #value/value
+@app.callback([Output('race-mgmt', 'children'),
+               Output('driver-1-frontend-storage', 'children'),
+               Output('driver-2-frontend-storage', 'children')],
+              [Input('submit-drivers-button', 'n_clicks')],
+              [State('driver-1-name-input', 'value'),
+               State('driver-2-name-input', 'value')]) 
 def to_prerace(n_clicks, driver_1_name, driver_2_name):
 
     driver1, driver2 = create_drivers(driver_1_name, driver_2_name, config['session_name'])
 
-    return prerace_layout(), [driver1, driver2]
+    return prerace_layout(driver1, driver2), driver1.to_dict(as_json = True), driver2.to_dict(as_json = True)
 
-@app.callback(Output('race-mgmt', 'children'), #driver-frontend, children?
-              Input('submit-drivers-button', 'n_clicks'),
-              State('driver-frontend',)) #value/value
-def to_race(n_clicks, driver_1_name, driver_2_name):
+# @app.callback(Output('race-mgmt', 'children'), #driver-frontend, children?
+#               Input('submit-drivers-button', 'n_clicks'),
+#               State('driver-frontend',)) #value/value
+# def to_race(n_clicks, driver_1_name, driver_2_name):
 
-    return race_layout(driver1, driver2), [driver1, driver2]
+#     return race_layout(driver1, driver2), [driver1, driver2]
 
-def to_postrace(..):
+# def to_postrace(..):
 
-    # upload_data(driver1, driver2)
+#     # upload_data(driver1, driver2)
 
-    return postrace_layout(driver1,driver2)
+#     return postrace_layout(driver1,driver2)
 
-def to_default(..):
+# def to_default(..):
 
-    # refresh high scores
+#     # refresh high scores
     
-    return default_layout
+#     return default_layout
     
 
 # @app.callback(Output('tracking-vis', 'children'),

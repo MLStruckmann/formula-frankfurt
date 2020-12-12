@@ -33,13 +33,16 @@ def default_layout():
         row=True,
     )
 
+    submit_drivers_button = dbc.Button("Submit Drivers", color="primary", className="mr-1", id='submit-drivers-button')
     form = dbc.Form([driver1_input, driver2_input])
-    layout = html.Div(form)
+    layout = html.Div([form, submit_drivers_button])
     return layout 
 
-def prerace_layout():
+def prerace_layout(driver1, driver2):
 
-    layout = ''
+    text = 'Hallo ihr alten Luschen ' + driver1.driver_name + ' und ' + driver2.driver_name + ' wollt ihr noch ne Runde???'
+    start_race_button = dbc.Button("Primary", outline=True, color="primary", className="mr-1", id = 'start-race-button')
+    layout = html.Div([html.H1(text),start_race_button])
     return layout
 
 def race_layout():
