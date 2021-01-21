@@ -75,6 +75,7 @@ def collect_race_data(driver1,
                 driver1.lap_count += 1
                 driver1.lap_times.append((current_time - driver1.time_stamp_last_lap).total_seconds())
                 driver1.time_stamp_last_lap = current_time
+                print("Last time stamp",driver1.time_stamp_last_lap)
                 print("\nLap updated for driver1")
                 print("Lap count:\t",driver1.lap_count,"\nLap time:\t",driver1.lap_times)
 

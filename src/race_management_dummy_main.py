@@ -1,13 +1,16 @@
 from datetime import datetime
 from race_management.data_gathering import read_sensor
 from race_management.race_statistics import Driver, collect_race_data
+from car_steering.voltage_control import send_signal
 import random
 import string
+import serial
 
 # Start race
 print("------- Race started -------\n")
 start_time = datetime.now()
 lap_number = 5 # REPLACE WITH VALUE FROM CONFIG.JSON
+ser = serial.Serial('COM6', 9600)
 
 # Initialize driver data with Driver class
 
@@ -23,9 +26,7 @@ race_ongoing = True # boolean value that ends race-loop when race is finished
 
 while race_ongoing:
 
-    signal_driver1, signal_driver2 = read_sensor()
-
-    #print("Driver 1:",signal_driver1,"\nDriver 2:",signal_driver2)
+    signal_driver1, signal_driver2 = read_sensor(ser)
 
     # Transform sensor data to relevant race data for both drivers (only ne input stream for both lap sensors)
     driver1, driver2, race_ongoing = collect_race_data(driver1, 
@@ -34,4 +35,12 @@ while race_ongoing:
                                                        signal_driver2,
                                                        lap_number)
 
+    auto_driver = "Left" # TODO insert which driver is autonomous from front end or config
+    # if auto_driver not set to "Left" or "Right" no signal is sent; two human drivers can compete
+    if auto_driver == "Left":
+        send_signal(ser,driver1,"easy") # TODO insert driver mode from front end or config
+
+    if auto_driver == "Right":
+        send_signal(ser,driver2,"easy") # TODO insert driver mode from front end or config    
+    
 print("\n------- Race finished -------\n")
