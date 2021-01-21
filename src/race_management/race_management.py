@@ -1,6 +1,6 @@
 from datetime import datetime
 from race_management.data_gathering import generate_race_data
-from race_management.race_statistics import Driver, collect_race_data_real
+from race_management.race_statistics import Driver, collect_race_data
 import random
 import string
 
