@@ -8,16 +8,16 @@ class Driver:
     "Class for collecting driver lap data"
 
     # Initialize driver object
-    def __init__(self, driver_name, raceid, conference_name, start_time, lap_count = 0, lap_times = [], fastest_lap = None, average_lap = None):
-        self.lap_count = lap_count
-        self.lap_times = lap_times
+    def __init__(self, driver_name, raceid, conference_name, start_time):
         self.driver_name = driver_name
         self.raceid = raceid
         self.conference_name = conference_name
         self.start_time = start_time
         self.time_stamp_last_lap = start_time
-        self.fastest_lap = fastest_lap
-        self.average_lap = average_lap
+        self.lap_count = 0
+        self.lap_times = []
+        self.fastest_lap = None
+        self.average_lap = None
 
     # Calculate race metrics from driver data
     def calculate_metrics(self):
