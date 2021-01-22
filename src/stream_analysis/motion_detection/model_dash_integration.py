@@ -143,7 +143,6 @@ class Detector(object):
                     if self.view_img:  # Add bbox to image
                         label = '%s %.2f' % (self.names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)])
-                car_positions = det
 
             # Print time (inference + NMS)
             #print('%sDone. (%.3fs)' % (s, t2 - t1))
@@ -168,8 +167,6 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-def return_det():
-    yield (car_positions)
 
 # server = Flask(__name__)
 # app = dash.Dash(__name__, server=server)

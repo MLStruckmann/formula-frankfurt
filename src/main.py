@@ -8,7 +8,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 
-from stream_analysis.motion_detection.model_dash_integration import Detector, gen, return_det
+from stream_analysis.motion_detection.model_dash_integration import Detector, gen
 from azure_.az_storage.cosmos_data import upload_cosmos, download_cosmos
 from frontend.apps import high_score_table
 from frontend.apps.race_management_frontend import default_layout, prerace_layout, race_layout, postrace_layout
