@@ -4,7 +4,7 @@ import dash_html_components as html
 
 from flask import Flask, Response
 import cv2
-
+import os
 import argparse
 
 from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in models.py
@@ -154,8 +154,8 @@ class Detector(object):
 
 
 def gen(camera):
-    for path, img, im0s, vid_cap in camera.dataset:
 
+    for path, img, im0s, vid_cap in camera.dataset:
         (p, im0, det) = camera.get_frame(path, img, im0s, vid_cap)
 
         #car_positions = car_positions.append(det)[:-1]
