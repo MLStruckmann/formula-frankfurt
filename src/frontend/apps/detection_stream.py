@@ -1,4 +1,4 @@
-from maindash import app, server
+from maindash import server
 
 import dash_html_components as html
 from stream_analysis.motion_detection.model_dash_integration import Detector, gen

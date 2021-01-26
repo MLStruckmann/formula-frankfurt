@@ -1,3 +1,6 @@
+'''
+OBSOLETE - Run app.py to start app
+
 import argparse
 import json
 
@@ -83,13 +86,6 @@ app.layout = html.Div([
 #                prevent_initial_call = True) 
 # def to_prerace(n_clicks, driver_1_name, driver_2_name):
 
-
-
-
-
-
-
-
 #     driver1, driver2 = create_drivers(driver_1_name, driver_2_name, config['session_name'])
 
 #     return prerace_layout(driver1, driver2), driver1.to_dict(as_json = True), driver2.to_dict(as_json = True)
@@ -142,3 +138,5 @@ if __name__ == '__main__':
     app.run_server(debug=False)
 
     print('this runs')
+
+    '''

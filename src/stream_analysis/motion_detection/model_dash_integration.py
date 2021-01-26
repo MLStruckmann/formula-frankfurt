@@ -1,10 +1,10 @@
-from maindash import app, server, recent_locations
+from maindash import recent_locations
 
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-from frontend.apps import track_visualization
+# import dash
+# import dash_core_components as dcc
+# import dash_html_components as html
+# from dash.dependencies import Input, Output
+# from frontend.apps import track_visualization
 
 from flask import Flask, Response
 import cv2

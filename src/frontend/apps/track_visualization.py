@@ -1,4 +1,4 @@
-from maindash import app, server, recent_locations
+from maindash import app, recent_locations
 import plotly.graph_objects as go
 
 import dash
