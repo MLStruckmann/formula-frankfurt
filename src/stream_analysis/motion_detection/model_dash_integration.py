@@ -1,17 +1,20 @@
+from maindash import app, server, recent_locations
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
+from frontend.apps import track_visualization
 
 from flask import Flask, Response
 import cv2
 import os
 import argparse
+import numpy as np #TODO this isn't necessary. Just for the PoC
 
 from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in models.py
-from stream_analysis.motion_detection.utils.datasets import *
+from stream_analysis.motion_detection.utils.datasets import * #TODO do we need all of this?
 from stream_analysis.motion_detection.utils.utils import *
-
-
 
 class Detector(object):
 
@@ -152,36 +155,23 @@ class Detector(object):
                 return (p, im0, det)
 
 
-
 def gen(camera):
 
     for path, img, im0s, vid_cap in camera.dataset:
         (p, im0, det) = camera.get_frame(path, img, im0s, vid_cap)
 
         #car_positions = car_positions.append(det)[:-1]
-
+        
+        if det is not None:
+            recent_locations.pop(0)
+            recent_locations.append((int(det[0][0]), int(det[0][1])))
+            
+            #TODO change to handle tensor
+            #update_position_vis(num)
+        
         # print(type(det))
-        ret, jpeg = cv2.imencode('.jpg', im0)
+        _ , jpeg = cv2.imencode('.jpg', im0)
         frame = jpeg.tobytes()
         # cv2.imshow(p, im0)       
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-
-# server = Flask(__name__)
-# app = dash.Dash(__name__, server=server)
-
-# @server.route('/video_feed')
-# def video_feed():
-#     return Response(gen(Detector('C:/Users/sdicarrera/Documents/yolov3-master/weights/last.pt', 
-#                                  'C:/Users/sdicarrera/Documents/yolov3-master/cfg/yolov3-tiny.cfg', 
-#                                  'C:/Users/sdicarrera/Documents/yolov3-master/data_new/names.name', 'cpu', '0')),
-#                     mimetype='multipart/x-mixed-replace; boundary=frame') #TODO Change paths to project directory
-
-# app.layout = html.Div([
-#     html.H1("Webcam Test"),
-#     html.Img(src="/video_feed")
-# ])
-
-# if __name__ == '__main__':
-#     app.run_server(debug=True)

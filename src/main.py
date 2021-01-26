@@ -66,11 +66,11 @@ app.layout = html.Div([
     html.Img(src="/video_feed"),
     html.Div(default_layout(), id = 'race-mgmt'),
     #html.Div(high_score_table.layout(download_cosmos(config['azure_cosmos_key']))),
-    dcc.Interval(
-            id='interval-component',
-            interval=5*1000, # in milliseconds
-            n_intervals=0
-    )
+    # dcc.Interval(
+    #         id='interval-component',
+    #         interval=5*1000, # in milliseconds
+    #         n_intervals=0
+    # )
 ])
 
 # THIS IS THE ONE WERE USING BUT IM NOT WORKING ON IT RIGHT NOW
