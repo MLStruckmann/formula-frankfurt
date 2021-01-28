@@ -5,9 +5,6 @@ from azure_dummy.az_storage.cosmos_data import download_cosmos #TODO replace wit
 
 import json
 
-def hello():
-    print('hello')
-
 if __name__ == '__main__':
 
     config = get_config()

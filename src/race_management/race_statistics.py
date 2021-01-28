@@ -54,9 +54,11 @@ class Driver:
 
 def create_drivers(name_driver1, name_driver2, conference_name):
 
+    # Create unique race IDs
     start_time = datetime.now()
-
     raceid_driver1, raceid_driver2 = start_time.strftime("%Y%m%d-%H%M%S") + "_" + name_driver1, start_time.strftime("%Y%m%d-%H%M%S") + "_" + name_driver2
+    
+    # Create drivers
     driver1 = Driver(name_driver1, raceid_driver1, conference_name, start_time)
     driver2 = Driver(name_driver2, raceid_driver2, conference_name, start_time)
 
@@ -105,7 +107,7 @@ def collect_race_data(driver1,
 def run_race(driver1, driver2, lap_number, auto_driver = None, signal_limit = None, buffer_time = None):
 
     print("------- Race started -------\n")
-    #start_time = datetime.now()
+
     ser = serial.Serial('COM6', 9600)
 
     race_ongoing = True # boolean value that ends race-loop when race is finished

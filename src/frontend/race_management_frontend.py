@@ -52,13 +52,6 @@ def rm_form():
     layout = html.Div([form, start_race_button])
     return layout 
 
-# def rm_prerace_layout(driver1, driver2):
-
-#     text = 'Ready to race with ' + driver1.driver_name + ' and ' + driver2.driver_name + '!'
-#     start_race_button = dbc.Button("Start Race", outline=True, color="primary", className="mr-1", id = 'start-race-button')
-#     layout = html.Div([html.H1(text),start_race_button])
-#     return layout
-
 def rm_race_layout(driver_1_name, driver_2_name):
 
     text = 'Race between ' + driver_1_name + ' and ' + driver_2_name
@@ -76,18 +69,7 @@ def rm_norace_layout():
                State('driver-2-name-input', 'value')],
                prevent_initial_call = True) 
 def rm2_callback(b1_n_clicks, d1, d2):
-
-    #config = get_config()
-
-    # global driver1, driver2
-
     return rm_race_layout(d1, d2)
-
-    # button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-    # print(button_id)
-
-    #return rm_race_layout(), {'display':'none'} #, html.Div(html.H1('whatever'))#driver1, driver2) #json.dumps({'ongoing':'1'})#, driver1.to_dict(as_json = True), driver2.to_dict(as_json = True)
 
 @app.callback(Output('race-mgmt-3', 'children'),
               [Input('race-mgmt-2', 'children')],
@@ -96,32 +78,34 @@ def rm2_callback(b1_n_clicks, d1, d2):
                prevent_initial_call = True) 
 def racing_call(n_clicks, driver_1_name, driver_2_name):
 
+    # Get relevant config values
     config = get_config()
-
     lap_number = int(config['lap_number'])
     signal_limit = int(config['signal_limit'])
     buffer_time = int(config['buffer_time'])
 
+    # Set driver
     driver1, driver2 = create_drivers(driver_1_name, driver_2_name, config['session_name'])
 
+    # Select auto driver, if necessary
     auto_driver = "Neither"
-
     if driver1.driver_name == 'AUTO':
             auto_driver = 'L'
     elif driver2.driver_name == 'AUTO':
             auto_driver = 'R'
 
+    # Run race!
     driver1, driver2 = run_race(driver1, driver2, lap_number, auto_driver, signal_limit, buffer_time)
 
+    # Calculate metrics (avg lap time, fastest lap) for each driver
     driver1.calculate_metrics()
     driver2.calculate_metrics()
 
-    print(driver1.driver_name, driver2.driver_name)
-
+    # Upload race data to azure
     race_data = [driver1.to_dict(for_azure = True),
                  driver2.to_dict(for_azure = True)] #TODO test if this is working
 
-    upload_cosmos(race_data)
+    upload_cosmos(race_data, config['azure_cosmos_key'])
 
     return html.Div(html.H1('Race finished. Driver times: \n {}: {} \n {}. {}'.format(driver1.driver_name,
                                                                                     str(driver1.average_lap * lap_number),
