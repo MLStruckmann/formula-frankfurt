@@ -1,6 +1,9 @@
+from race_management.data_gathering import read_sensor
+from car_steering.voltage_control import send_signal
+
+import serial
+
 from functools import reduce
-import random # for random driver name and random lap time
-import string # only for random driver name
 from datetime import datetime
 import json
 
@@ -48,6 +51,18 @@ class Driver:
 
         return driver_data
 
+def create_drivers(name_driver1, name_driver2, conference_name):
+
+    start_time = datetime.now()
+
+    # REPLACE WITH VALUES FROM USER INPUT:
+        # Create unique IDs with race start time and driver names
+    raceid_driver1, raceid_driver2 = start_time.strftime("%Y%m%d-%H%M%S") + "_" + name_driver1, start_time.strftime("%Y%m%d-%H%M%S") + "_" + name_driver2
+    driver1 = Driver(name_driver1, raceid_driver1, conference_name, start_time)
+    driver2 = Driver(name_driver2, raceid_driver2, conference_name, start_time)
+
+    return driver1, driver2
+
 def create_driver_from_dict(dict):
 
     #d = Driver(driver_name="")
@@ -75,7 +90,6 @@ def collect_race_data(driver1,
                 driver1.lap_count += 1
                 driver1.lap_times.append((current_time - driver1.time_stamp_last_lap).total_seconds())
                 driver1.time_stamp_last_lap = current_time
-                print("Last time stamp",driver1.time_stamp_last_lap)
                 print("\nLap updated for driver1")
                 print("Lap count:\t",driver1.lap_count,"\nLap time:\t",driver1.lap_times)
 
@@ -94,3 +108,33 @@ def collect_race_data(driver1,
         race_ongoing = False # End race by ending race-loop
 
     return driver1, driver2, race_ongoing
+
+def run_race(driver1, driver2, lap_number):
+
+    print("------- Race started -------\n")
+    #start_time = datetime.now()
+    #lap_number = 5 # REPLACE WITH VALUE FROM CONFIG.JSON
+    ser = serial.Serial('COM6', 9600)
+
+    race_ongoing = True # boolean value that ends race-loop when race is finished
+
+    while race_ongoing:
+
+        signal_driver1, signal_driver2 = read_sensor(ser)
+
+        # Transform sensor data to relevant race data for both drivers (only ne input stream for both lap sensors)
+        driver1, driver2, race_ongoing = collect_race_data(driver1, 
+                                                        driver2, 
+                                                        signal_driver1, 
+                                                        signal_driver2,
+                                                        lap_number)
+
+        auto_driver = "Left" # TODO insert which driver is autonomous from front end or config
+        # if auto_driver not set to "Left" or "Right" no signal is sent; two human drivers can compete
+        if auto_driver == "Left":
+            send_signal(ser,driver1,"easy") # TODO insert driver mode from front end or config
+
+        if auto_driver == "Right":
+            send_signal(ser,driver2,"easy") # TODO insert driver mode from front end or config    
+        
+    return driver1, driver2

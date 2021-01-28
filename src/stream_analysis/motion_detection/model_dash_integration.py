@@ -119,6 +119,7 @@ class Detector(object):
 
         # Process detections
         for i, det in enumerate(pred):  # detections for image i
+            label_det = []
             if self.webcam:  # batch_size >= 1
                 p, s, im0 = path[i], '%g: ' % i, im0s[i].copy()
             else:
@@ -145,6 +146,7 @@ class Detector(object):
 
                     if self.view_img:  # Add bbox to image
                         label = '%s %.2f' % (self.names[int(cls)], conf)
+                        label_det.append(label)
                         plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)])
 
             # Print time (inference + NMS)
@@ -152,19 +154,25 @@ class Detector(object):
 
             # Stream results
             if self.view_img:
-                return (p, im0, det)
+                return (p, im0, det, label_det)
 
 
 def gen(camera):
 
     for path, img, im0s, vid_cap in camera.dataset:
-        (p, im0, det) = camera.get_frame(path, img, im0s, vid_cap)
+        (p, im0, det, labels) = camera.get_frame(path, img, im0s, vid_cap)
 
         #car_positions = car_positions.append(det)[:-1]
         
         if det is not None:
-            recent_locations.pop(0)
-            recent_locations.append((int(det[0][0]), int(det[0][1])))
+            
+            for i in range(len(labels)):
+                
+                cl = 0
+                if labels[i].startswith('b'): cl = 1
+
+                recent_locations.pop(0)
+                recent_locations.append((int(det[i][0]), int(det[i][1]), cl))
             
             #TODO change to handle tensor
             #update_position_vis(num)
