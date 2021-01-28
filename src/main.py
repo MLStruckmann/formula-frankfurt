@@ -1,3 +1,6 @@
+'''
+OBSOLETE - Run app.py to start app
+
 import argparse
 import json
 
@@ -16,6 +19,8 @@ from frontend.apps.race_management_frontend import default_layout, prerace_layou
 from race_management.race_management import create_drivers, run_race
 import random 
 import string 
+import os
+import pathlib
 
 # Read config
 with open('src/config.json', 'r') as fp:
@@ -24,19 +29,26 @@ with open('src/config.json', 'r') as fp:
 print('Session Name: ' + config['session_name'])
 
 # Test Data Download
-drivers = download_cosmos(config['azure_cosmos_key'])
+#drivers = download_cosmos(config['azure_cosmos_key'])
 
-print(drivers)
+#print(drivers)
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server)
 
 @server.route('/video_feed')
 def video_feed():
-    a = gen(Detector(r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\weights\last.pt", 
-    r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\cfg\yolov3-tiny.cfg", 
-    r'C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\data_new\names.name', 'cpu', '0'))
-    print(type(a))
+    # a = gen(Detector(r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\weights\last.pt", 
+    # r"C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\cfg\yolov3-tiny.cfg", 
+    # r'C:\Users\sdicarrera\Documents\formula-frankfurt\src\stream_analysis\motion_detection\data_new\names.name', 'cpu', '0'))
+    
+    current_path = str(os.getcwd())
+    weights_path = current_path + r'\src\stream_analysis\motion_detection\weights\last.pt'
+    model_path = current_path + r'\src\stream_analysis\motion_detection\cfg\yolov3-tiny.cfg'
+    names_path = current_path + r'\src\stream_analysis\motion_detection\data_new\names.name'
+
+    a = gen(Detector(weights_path, model_path, names_path, 'cpu', '0'))
+
     return Response(a, mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # def video_feed():
@@ -56,25 +68,27 @@ app.layout = html.Div([
     html.H1("Hallo meine lieben Leute"),
     html.Img(src="/video_feed"),
     html.Div(default_layout(), id = 'race-mgmt'),
-    html.Div(high_score_table.layout(download_cosmos(config['azure_cosmos_key']))),
-    dcc.Interval(
-            id='interval-component',
-            interval=5*1000, # in milliseconds
-            n_intervals=0
-    )
+    #html.Div(high_score_table.layout(download_cosmos(config['azure_cosmos_key']))),
+    # dcc.Interval(
+    #         id='interval-component',
+    #         interval=5*1000, # in milliseconds
+    #         n_intervals=0
+    # )
 ])
 
-@app.callback([Output('race-mgmt', 'children'),
-               Output('driver-1-frontend-storage', 'children'),
-               Output('driver-2-frontend-storage', 'children')],
-              [Input('submit-drivers-button', 'n_clicks')],
-              [State('driver-1-name-input', 'value'),
-               State('driver-2-name-input', 'value')]) 
-def to_prerace(n_clicks, driver_1_name, driver_2_name):
+# THIS IS THE ONE WERE USING BUT IM NOT WORKING ON IT RIGHT NOW
+# @app.callback([Output('race-mgmt', 'children'),
+#                Output('driver-1-frontend-storage', 'children'),
+#                Output('driver-2-frontend-storage', 'children')],
+#               [Input('submit-drivers-button', 'n_clicks')],
+#               [State('driver-1-name-input', 'value'),
+#                State('driver-2-name-input', 'value')],
+#                prevent_initial_call = True) 
+# def to_prerace(n_clicks, driver_1_name, driver_2_name):
 
-    driver1, driver2 = create_drivers(driver_1_name, driver_2_name, config['session_name'])
+#     driver1, driver2 = create_drivers(driver_1_name, driver_2_name, config['session_name'])
 
-    return prerace_layout(driver1, driver2), driver1.to_dict(as_json = True), driver2.to_dict(as_json = True)
+#     return prerace_layout(driver1, driver2), driver1.to_dict(as_json = True), driver2.to_dict(as_json = True)
 
 # @app.callback(Output('race-mgmt', 'children'), #driver-frontend, children?
 #               Input('submit-drivers-button', 'n_clicks'),
@@ -99,9 +113,12 @@ def to_prerace(n_clicks, driver_1_name, driver_2_name):
 # @app.callback(Output('tracking-vis', 'children'),
 #               Input('interval-component', 'n_intervals'))
 # def update_ticker
-name_driver1, name_driver2 = ''.join(random.choice(string.ascii_lowercase) for i in range(4)),''.join(random.choice(string.ascii_lowercase) for i in range(4))
 
-driver1, driver2 = create_drivers(name_driver1, name_driver2, config['session_name'])
+
+# THIS WAS UNCOMMENTED FOR SOME REASON
+# name_driver1, name_driver2 = ''.join(random.choice(string.ascii_lowercase) for i in range(4)),''.join(random.choice(string.ascii_lowercase) for i in range(4))
+
+# driver1, driver2 = create_drivers(name_driver1, name_driver2, config['session_name'])
 
 
 
@@ -121,3 +138,5 @@ if __name__ == '__main__':
     app.run_server(debug=False)
 
     print('this runs')
+
+    '''
