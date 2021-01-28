@@ -1,3 +1,4 @@
+from maindash import get_config
 from race_management.data_gathering import read_sensor
 from car_steering.voltage_control import send_signal
 
@@ -55,38 +56,30 @@ def create_drivers(name_driver1, name_driver2, conference_name):
 
     start_time = datetime.now()
 
-    # REPLACE WITH VALUES FROM USER INPUT:
-        # Create unique IDs with race start time and driver names
     raceid_driver1, raceid_driver2 = start_time.strftime("%Y%m%d-%H%M%S") + "_" + name_driver1, start_time.strftime("%Y%m%d-%H%M%S") + "_" + name_driver2
     driver1 = Driver(name_driver1, raceid_driver1, conference_name, start_time)
     driver2 = Driver(name_driver2, raceid_driver2, conference_name, start_time)
 
     return driver1, driver2
 
-def create_driver_from_dict(dict):
-
-    #d = Driver(driver_name="")
-
-    return 
-
 # Transform sensor data to relevant race data for both drivers (only ne input stream for both lap sensors) 
 def collect_race_data(driver1, 
                       driver2, 
                       signal_driver1, 
                       signal_driver2,
-                      lap_number):
-    
+                      lap_number,
+                      signal_limit = 100,
+                      buffer_time = 3):
+
     race_ongoing = True
     current_time = datetime.now()
 
-    # Define a limit for when sensor is activated
-    signal_limit = 100 # TODO REPLACE WITH VALUES FROM SETTINGS.JSON
     
     # Update data for driver1
     if signal_driver1 < signal_limit: # Check if lap sensor is activated
         if driver1.lap_count < lap_number: # Check if driver has already finished the race. If so, do not update race data.
             # Check if last active sensor signal is more than n seconds old:
-            if (current_time - driver1.time_stamp_last_lap).total_seconds() > 3: # TODO REPLACE WITH VALUE FROM SETTINGS.JSON
+            if (current_time - driver1.time_stamp_last_lap).total_seconds() > buffer_time:
                 driver1.lap_count += 1
                 driver1.lap_times.append((current_time - driver1.time_stamp_last_lap).total_seconds())
                 driver1.time_stamp_last_lap = current_time
@@ -96,7 +89,7 @@ def collect_race_data(driver1,
     # Update data for driver2
     if signal_driver2 < signal_limit:
         if driver2.lap_count < lap_number:
-            if (current_time - driver2.time_stamp_last_lap).total_seconds() > 3: # TODO REPLACE WITH VALUE FROM SETTINGS.JSON
+            if (current_time - driver2.time_stamp_last_lap).total_seconds() > buffer_time:
                 driver2.lap_count += 1
                 driver2.lap_times.append((current_time - driver2.time_stamp_last_lap).total_seconds())
                 driver2.time_stamp_last_lap = current_time
@@ -109,11 +102,10 @@ def collect_race_data(driver1,
 
     return driver1, driver2, race_ongoing
 
-def run_race(driver1, driver2, lap_number):
+def run_race(driver1, driver2, lap_number, auto_driver = None, signal_limit = None, buffer_time = None):
 
     print("------- Race started -------\n")
     #start_time = datetime.now()
-    #lap_number = 5 # REPLACE WITH VALUE FROM CONFIG.JSON
     ser = serial.Serial('COM6', 9600)
 
     race_ongoing = True # boolean value that ends race-loop when race is finished
@@ -127,14 +119,16 @@ def run_race(driver1, driver2, lap_number):
                                                         driver2, 
                                                         signal_driver1, 
                                                         signal_driver2,
-                                                        lap_number)
+                                                        lap_number = lap_number,
+                                                        signal_limit = signal_limit,
+                                                        buffer_time = buffer_time)
 
-        auto_driver = "Left" # TODO insert which driver is autonomous from front end or config
+        #auto_driver = "Left" # TODO insert which driver is autonomous from front end or config
         # if auto_driver not set to "Left" or "Right" no signal is sent; two human drivers can compete
-        if auto_driver == "Left":
-            send_signal(ser,driver1,"easy") # TODO insert driver mode from front end or config
+        if auto_driver == "L":
+            send_signal(ser,driver1,"easy")
 
-        if auto_driver == "Right":
-            send_signal(ser,driver2,"easy") # TODO insert driver mode from front end or config    
+        if auto_driver == "R":
+            send_signal(ser,driver2,"easy")
         
     return driver1, driver2

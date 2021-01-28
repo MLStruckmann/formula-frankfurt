@@ -11,21 +11,6 @@ def draw_circle(event,x,y,flags,param):
         cv2.circle(img,(x,y),5,(255,0,0),-1)
         mouseX,mouseY = x,y
 
-# print(M)
-
-# Print example transformation from picture #
-#############################################
-
-# plt.rcParams["figure.figsize"]= 10,10
-
-# plt.imshow(img)
-# plt.title('Input')
-# plt.show()
-
-# plt.imshow(dst)
-# plt.title('Output')
-# plt.show()
-
 def calc_matrix():
 
     global img
@@ -73,7 +58,7 @@ def calc_matrix():
     rows,cols,ch = img.shape
 
     pts1 = np.float32([pos_blue,pos_red,pos_yellow])
-    pts2 = np.float32([[1001, 1173],[1750, 1616],[3031, 1236]]) #TODO move to config?
+    pts2 = np.float32([[3474, 1435],[1069, 276],[278, 2118]]) #TODO move to config?
 
     M = cv2.getAffineTransform(pts1,pts2)
 

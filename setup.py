@@ -21,6 +21,10 @@ config["session_name"] = input('Enter Session Name (Conference Etc.):')
 # config["azure_cosmos"]["url"] = input('Enter Azure Cosmos URL:')
 config["azure_cosmos_key"] = input('Enter Azure Cosmos Key:')
 
+config["signal_limit"] = 100
+config["buffer_time"] = 3
+config["aspect_ratio"] = "[1280,720]"
+
 # Transformation Matrix
 config["transformation_matrix"] = str(M)
 # Transformation points
