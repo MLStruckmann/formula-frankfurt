@@ -10,6 +10,10 @@ def layout(video_feed = None,
            high_score_table = None, 
            rm_form = None,
            interval = 1000):
+    '''
+        Takes in the components that make up the main layout, and returns them arranged into a grid
+        interval: in ms, refresh time for component that updates the grid
+    '''
 
     layout = html.Div([
             dbc.Row([
@@ -26,10 +30,7 @@ def layout(video_feed = None,
                         dbc.Col(dcc.Interval(
                                 id='interval-component',
                                 interval= interval, # in milliseconds
-                                n_intervals=0)),
-                                html.Div(id = 'driver-1-frontend-storage', style = {'display':'none'}),
-                                html.Div(id = 'driver-2-frontend-storage', style = {'display':'none'}),
-                                html.Div(id = 'race-control', style = {'display':'none'})
+                                n_intervals=0))
                     ])
             ])
     
