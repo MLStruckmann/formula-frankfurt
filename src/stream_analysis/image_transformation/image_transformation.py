@@ -58,7 +58,7 @@ def calc_matrix():
     rows,cols,ch = img.shape
 
     pts1 = np.float32([pos_blue,pos_red,pos_yellow])
-    pts2 = np.float32([[3474, 1435],[1069, 276],[278, 2118]]) #TODO move to config?
+    pts2 = np.float32([[1194, 370],[367,71],[96, 546]]) #TODO move to config?
 
     M = cv2.getAffineTransform(pts1,pts2)
 

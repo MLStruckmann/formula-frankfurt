@@ -149,6 +149,7 @@ class Detector(object):
                         label_det.append(label)
                         plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)])
 
+            label_det.reverse()
             # Stream results
             if self.view_img:
                 return (p, im0, det, label_det)
@@ -163,13 +164,15 @@ def gen(camera):
             
             for i in range(len(labels)):
                 
-                cl = 'red'
-                if labels[i].startswith('b'): cl = 'black'
+                cl = 'green'  
+                if labels[i].split(' ')[0] == 'black_car':
+                    cl = 'black'
+                else: cl = 'red'
 
                 recent_locations.pop(0)
                 recent_locations.append((int(det[i][0]), int(det[i][1]), cl))
 
-        dim = (640,480) #TODO read from config
+        dim = (850,480) #TODO read from config
         im0 = cv2.resize(im0, dim, interpolation = cv2.INTER_AREA)
         _ , jpeg = cv2.imencode('.jpg', im0)
         frame = jpeg.tobytes()
