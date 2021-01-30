@@ -31,13 +31,13 @@ void loop() {
     incomingByte = Serial.read();
 
     if (incomingByte == 'q') {
-      analogWrite(output_pin, 160);
+      analogWrite(output_pin, 165);
     }
     if (incomingByte == 'w') {
-      analogWrite(output_pin, 140);
+      analogWrite(output_pin, 155);
     }
     if (incomingByte == 'e') {
-      analogWrite(output_pin, 120);
+      analogWrite(output_pin, 145);
     }
     
 }

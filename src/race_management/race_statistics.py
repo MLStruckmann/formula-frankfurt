@@ -128,9 +128,13 @@ def run_race(driver1, driver2, lap_number, auto_driver = None, signal_limit = No
         #auto_driver = "Left" # TODO insert which driver is autonomous from front end or config
         # if auto_driver not set to "Left" or "Right" no signal is sent; two human drivers can compete
         if auto_driver == "L":
-            send_signal(ser,driver1,"easy")
+            send_signal(ser=ser,
+                        driver=driver1,
+                        driver_mode=driver1.driver_name)
 
         if auto_driver == "R":
-            send_signal(ser,driver2,"easy")
+            send_signal(ser=ser,
+                        driver=driver2,
+                        driver_mode=driver2.driver_name)
         
     return driver1, driver2
