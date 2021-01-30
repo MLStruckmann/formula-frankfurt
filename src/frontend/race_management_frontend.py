@@ -4,7 +4,7 @@ from datetime import datetime
 from race_management.data_gathering import read_sensor
 from race_management.race_statistics import create_drivers, run_race
 from car_steering.voltage_control import send_signal
-from azure_dummy.az_storage.cosmos_data import upload_cosmos #TODO use real azure
+from azure_.cosmos_data import upload_cosmos
 
 import random
 import string
@@ -89,9 +89,9 @@ def racing_call(n_clicks, driver_1_name, driver_2_name):
 
     # Select auto driver, if necessary
     auto_driver = "Neither"
-    if driver1.driver_name == 'AUTO':
+    if driver1.driver_name in ['easy','medium','hard']:
             auto_driver = 'L'
-    elif driver2.driver_name == 'AUTO':
+    elif driver2.driver_name in ['easy','medium','hard']:
             auto_driver = 'R'
 
     # Run race!
@@ -103,9 +103,9 @@ def racing_call(n_clicks, driver_1_name, driver_2_name):
 
     # Upload race data to azure
     race_data = [driver1.to_dict(for_azure = True),
-                 driver2.to_dict(for_azure = True)] #TODO test if this is working
+                 driver2.to_dict(for_azure = True)]
 
-    upload_cosmos(race_data, config['azure_cosmos_key'])
+    upload_cosmos(race_data)
 
     return html.Div(html.H1('Race finished. Driver times: \n {}: {} \n {}. {}'.format(driver1.driver_name,
                                                                                     str(driver1.average_lap * lap_number),

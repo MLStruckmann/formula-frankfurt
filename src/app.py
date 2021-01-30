@@ -1,6 +1,6 @@
 from maindash import app, get_config
 from frontend import main_app, detection_stream, track_visualization, high_score_table, race_management_frontend
-from azure_dummy.az_storage.cosmos_data import download_cosmos #TODO replace with real azure
+from azure_.cosmos_data import download_cosmos
 
 import json
 
@@ -9,7 +9,7 @@ if __name__ == '__main__':
     config = get_config()
 
     # Get high score data from Azure
-    hs_df = download_cosmos(config['azure_cosmos_key'])
+    hs_df = download_cosmos()
 
     # Create high score table
     hs_table = high_score_table.layout(hs_df)
