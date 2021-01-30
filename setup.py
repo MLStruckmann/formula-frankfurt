@@ -25,7 +25,7 @@ config['aspect_ratio'] = '[1280,720]'
 config['camera_aspect_ratio'] = [850,480]
 
 # Image transformation config
-reference_points_target = [[1194,370],[367,71],[96,546]] # blue, red, yellow
+reference_points_target = [[1194,370],[367,71],[96,546]] # blue, red, yellow (1280x720)
 M = calc_matrix(reference_points_target)
 config['transformation_matrix'] = M.tolist()
 

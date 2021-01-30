@@ -54,9 +54,3 @@ def calc_matrix(reference_points_target):
 
     return M
 
-def transform_point(M, pos):
-
-    pos.append(1)
-
-    return np.matmul(M,pos)
-

@@ -2,6 +2,7 @@ from flask import Flask, Response
 import cv2
 import os
 import argparse
+import numpy as np
 
 from maindash import recent_locations, get_config
 from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in models.py
@@ -152,6 +153,8 @@ def gen(camera):
     for path, img, im0s, vid_cap in camera.dataset:
         (p, im0, det, labels) = camera.get_frame(path, img, im0s, vid_cap)
         
+        config = get_config()
+
         if det is not None:
             
             for i in range(len(labels)):
@@ -162,9 +165,11 @@ def gen(camera):
                 else: cl = 'red'
 
                 recent_locations.pop(0)
-                recent_locations.append((int(det[i][0]), int(det[i][1]), cl))
+                new_point = np.array([det[i][0], det[i][1], 1])
+                transformation_matrix = config["transformation_matrix"]
+                new_point = np.matmul(transformation_matrix,new_point)
+                recent_locations.append((int(new_point[0]), int(new_point[1]), cl))
 
-        config = get_config()
         dim = tuple(config["camera_aspect_ratio"])
         im0 = cv2.resize(im0, dim, interpolation = cv2.INTER_AREA)
         _ , jpeg = cv2.imencode('.jpg', im0)
