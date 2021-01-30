@@ -20,6 +20,8 @@ def upload_cosmos(race_data):
         if driver_data["driver_name"] not in ['easy', 'medium', 'hard']:
             container.upsert_item(driver_data)
 
+    print("\nDriver data uploaded to Azure Cosmos DB")
+
 def download_cosmos():
     client = CosmosClient(url, credential=key)
     database = client.get_database_client(database_name)
