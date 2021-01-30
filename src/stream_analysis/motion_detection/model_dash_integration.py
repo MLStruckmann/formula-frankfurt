@@ -1,19 +1,11 @@
-from maindash import recent_locations
-
-# import dash
-# import dash_core_components as dcc
-# import dash_html_components as html
-# from dash.dependencies import Input, Output
-# from frontend.apps import track_visualization
-
 from flask import Flask, Response
 import cv2
 import os
 import argparse
-import numpy as np #TODO this isn't necessary. Just for the PoC
 
+from maindash import recent_locations, get_config
 from stream_analysis.motion_detection.models import *  # set ONNX_EXPORT in models.py
-from stream_analysis.motion_detection.utils.datasets import * #TODO do we need all of this?
+from stream_analysis.motion_detection.utils.datasets import * 
 from stream_analysis.motion_detection.utils.utils import *
 
 class Detector(object):
@@ -172,7 +164,8 @@ def gen(camera):
                 recent_locations.pop(0)
                 recent_locations.append((int(det[i][0]), int(det[i][1]), cl))
 
-        dim = (850,480) #TODO read from config
+        config = get_config()
+        dim = tuple(config["camera_aspect_ratio"])
         im0 = cv2.resize(im0, dim, interpolation = cv2.INTER_AREA)
         _ , jpeg = cv2.imencode('.jpg', im0)
         frame = jpeg.tobytes()

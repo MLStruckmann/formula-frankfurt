@@ -1,10 +1,7 @@
 import random
 import time
 from datetime import datetime, timedelta
-#import serial
 import time
-
-#ser = serial.Serial('COM6', 9600)
 
 def read_sensor(ser):
 

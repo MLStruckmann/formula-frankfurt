@@ -11,11 +11,11 @@ def layout(aspect_ratio):
 
     config = get_config()
 
-    [x, y, labels] = list(map(list, zip(*recent_locations)))
+    #transform_matrix = np.array(config["transformation_matrix"])
+    #recent_locations = np.array(recent_locations)
+    #recent_locations.dot(transform_matrix.T)
 
-    # matrix = np.array(dict(config['transformation_matrix'])) #TODO load np array from json
-    # shift = np.array([[matrix[0][0], matrix[0][1]],[matrix[1][0], matrix[1][1]]])
-    # transpose = np.array([matrix[0][2], matrix[1][2]])
+    [x, y, labels] = list(map(list, zip(*recent_locations)))
 
     fig = go.Figure(data=go.Scatter(x=x, y=y, mode='markers', marker = dict(size = 10, color = labels)))
     fig.update_xaxes(range=[0, 1280])

@@ -1,9 +1,5 @@
-from IPython.display import Image
 import numpy as np
 from cv2 import cv2, VideoCapture
-import os
-import PIL
-import matplotlib.pyplot as plt
 
 def draw_circle(event,x,y,flags,param):
     global mouseX,mouseY
@@ -11,12 +7,11 @@ def draw_circle(event,x,y,flags,param):
         cv2.circle(img,(x,y),5,(255,0,0),-1)
         mouseX,mouseY = x,y
 
-def calc_matrix():
+def calc_matrix(reference_points_target):
 
     global img
     cam = VideoCapture(0)   # 0 -> index of camera
     s, img = cam.read()
-    #TODO suppress warnings
 
     cv2.namedWindow("image",cv2.WINDOW_NORMAL)
     cv2.resizeWindow("image", 1280,720)
@@ -42,23 +37,18 @@ def calc_matrix():
             cv2.destroyAllWindows()
             break
 
-    # TODO: Error Handling
-    # try:
-    #     pos_blue
-    #     pos_red
-    #     pos_yellow
-    # except NameError:
-    #     print("Not all points were assigned")
-    # else:
-    #     print(pos_blue)
-    #     print(pos_red)
-    #     print(pos_yellow)
+    try:
+        pos_blue
+        pos_red
+        pos_yellow
+    except NameError:
+        raise Exception("Not all three reference points were assigned")
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # set CV2 color scale to RGB
     rows,cols,ch = img.shape
 
     pts1 = np.float32([pos_blue,pos_red,pos_yellow])
-    pts2 = np.float32([[1194, 370],[367,71],[96, 546]]) #TODO move to config?
+    pts2 = np.float32(reference_points_target)
 
     M = cv2.getAffineTransform(pts1,pts2)
 
@@ -67,10 +57,6 @@ def calc_matrix():
 def transform_point(M, pos):
 
     pos.append(1)
+
     return np.matmul(M,pos)
 
-def transform_image(M, img, img_size):
-    
-    pass
-    # TODO
-    #return cv2.warpAffine(img,M,(cols,rows))

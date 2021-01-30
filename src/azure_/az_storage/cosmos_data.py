@@ -1,17 +1,18 @@
 from azure.cosmos import CosmosClient
 import json
 import pandas as pd
+from maindash import get_config
 
-url = "https://mls-dashboard-data.documents.azure.com:443/"
-#key = "zRWAZ9FiwVtcZIqMhatuTf1knBYwQFYoYhXqJpfXQD9laT3mbVkJmeQsysAHUVq0QhMlMJZu40M8WDfOfgctVw==s"
-
+config = get_config()
+url = config["azure_cosmos_url"]
+key = config["azure_cosmos_key"]
+database_name = config["azure_cosmos_database_name"]
+container_name = config["azure_cosmos_container_name"]
 
 def upload_cosmos(race_data, key):
 
     client = CosmosClient(url, credential=key)
-    database_name = 'conference-data'
     database = client.get_database_client(database_name)
-    container_name = 'driver-data'
     container = database.get_container_client(container_name)
 
     # upload race data
@@ -21,9 +22,7 @@ def upload_cosmos(race_data, key):
 def download_cosmos(key):
 
     client = CosmosClient(url, credential=key)
-    database_name = 'conference-data'
     database = client.get_database_client(database_name)
-    container_name = 'driver-data'
     container = database.get_container_client(container_name)
 
     fastest_drivers = pd.DataFrame(columns=["driver_name","average_lap","fastest_lap"])
