@@ -4,7 +4,7 @@ from datetime import datetime
 from race_management.data_gathering import read_sensor
 from race_management.race_statistics import create_drivers, run_race
 from car_steering.voltage_control import send_signal
-from azure_.cosmos_data import upload_cosmos
+from azure_dummy.cosmos_data import upload_cosmos
 
 import random
 import string
@@ -49,7 +49,7 @@ def rm_form():
 
     start_race_button = dbc.Button("Start Race!", color="primary", className="mr-1", id='start-race-button')
     form = dbc.Form([driver1_input, driver2_input])
-    layout = html.Div([form, start_race_button])
+    layout = html.Div([form, start_race_button], style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
     return layout 
 
 def rm_race_layout(driver_1_name, driver_2_name):

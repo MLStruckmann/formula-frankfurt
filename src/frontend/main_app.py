@@ -15,23 +15,39 @@ def layout(video_feed = None,
         interval: in ms, refresh time for component that updates the grid
     '''
 
+    center_style = {'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}
+
     layout = html.Div([
-            dbc.Row([
-                        dbc.Col(html.Div(video_feed)),
+            dbc.Row([ # Title row
+                        dbc.Col(html.Div([html.Img(src = 'assets/pwc_logo.png',style={'height':'90%'})], style = {'height':'10vh', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}), width = 4),
+                        dbc.Col(html.H2('FS x PwC Carrera Dashboard', style = {'height':'10vh', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})),
+                        dbc.Col(html.Div([html.Img(src = 'assets/fs_logo.png',style={'height':'60%'})], style = {'height':'10vh', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}), width = 4),
+                    ]),
+            dbc.Row(html.Div(style = {'height':'30px'})),
+            dbc.Row([ # Cam and Visualization Row
+                        dbc.Col(html.Div(video_feed, style = center_style)),
                         dbc.Col(html.Div(track_vis))
                     ]),
-            dbc.Row([
-                        dbc.Col(html.Div(rm_form, id = 'race-mgmt')),
-                        dbc.Col(html.Div(html.H1('No Race'), id = 'race-mgmt-2')),
-                        dbc.Col(html.Div(html.H1(''), id = 'race-mgmt-3')),
-                        dbc.Col(html.Div(high_score_table)),
+            dbc.Row(html.Div(style = {'height':'30px'})),
+            dbc.Row([ # Race Management Row
+                        dbc.Col(html.Div(rm_form, id = 'race-mgmt', style = center_style), width = 6),
+                        dbc.Col(html.Div(html.H3('No Race Ongoing'), id = 'race-mgmt-2', style = center_style), width = 3),
+                        dbc.Col(html.Div(html.H3(''), id = 'race-mgmt-3', style = center_style), width = 3)
                     ]),
-            dbc.Row([
+            dbc.Row([ # High Score Row
+                        dbc.Col(html.H1(''), width=3),
+                        dbc.Col([html.H2('High Scores', style = center_style),
+                                 html.Div(style = {'height':'10px'}),
+                                 html.Div(high_score_table)]),
+                        dbc.Col(html.H1(''), width=3)
+                    ]),
+            dbc.Row([ # Interval Component (Invisible)
                         dbc.Col(dcc.Interval(
                                 id='interval-component',
                                 interval= interval, # in milliseconds
                                 n_intervals=0))
-                    ])
-            ])
+                    ]),     
+            ],
+            )
     
     return layout

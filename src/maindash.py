@@ -3,10 +3,12 @@ from flask import Flask
 import dash_bootstrap_components as dbc
 import json
 
+BS = 'https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/litera/bootstrap.min.css'
+
 server = Flask(__name__)
 app = dash.Dash(__name__, 
                 server=server, 
-                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                external_stylesheets=[BS],
                 suppress_callback_exceptions=True)
 
 # Recent location storage
