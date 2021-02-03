@@ -1,7 +1,7 @@
 from maindash import app, get_config
 from frontend import main_app, detection_stream, track_visualization, high_score_table, race_management_frontend
 
-from azure_dummy.cosmos_data import download_cosmos
+from azure_.cosmos_data import download_cosmos
 
 import json
 

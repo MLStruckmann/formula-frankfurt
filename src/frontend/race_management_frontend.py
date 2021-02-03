@@ -4,7 +4,7 @@ from datetime import datetime
 from race_management.data_gathering import read_sensor
 from race_management.race_statistics import create_drivers, run_race
 from car_steering.voltage_control import send_signal
-from azure_dummy.cosmos_data import upload_cosmos
+from azure_.cosmos_data import upload_cosmos
 
 import random
 import string

@@ -17,7 +17,7 @@ config['azure_cosmos_container_name'] = 'driver-data'
 
 # Race management config
 config['signal_limit'] = 100
-config['buffer_time'] = 3
+config['buffer_time'] = 2
 config['lap_number'] = 2
 
 # Frontend config
